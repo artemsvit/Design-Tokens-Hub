@@ -1,0 +1,260 @@
+/**
+ * Design System Variables
+ * Auto-generated from design tokens
+ */
+
+:root {
+  /* Colors */
+  --color-naviBlue: #2c88f2;
+  --color-superGreen: #30ae3e;
+  --color-freshMint: #42d7a5;
+  --color-indigo: #8c42d7;
+  --color-pinkRock: #d742af;
+  --color-orangeJuce: #fa730c;
+  --color-summer: #f2c02c;
+  --color-browne: #a55e29;
+  --color-tiffany: #2abaae;
+  --color-crimson: #eb1b56;
+
+  /* Shadows */
+  --shadow-big: 0px 14px 32px -4px #00000024;
+  --shadow-small: 0px 4px 4px -1px #0c0c0d0d;
+
+  /* Typography */
+
+  /* H1 */
+  --typography-h1-font-family: "Red Hat Display";
+  --typography-h1-font-size: 3.375rem;
+  --typography-h1-font-weight: 400;
+  --typography-h1-line-height: 1.323;
+  --typography-h1-letter-spacing: normal;
+
+  /* H3 */
+  --typography-h3-font-family: "Red Hat Display";
+  --typography-h3-font-size: 2rem;
+  --typography-h3-font-weight: 400;
+  --typography-h3-line-height: 1.323;
+  --typography-h3-letter-spacing: normal;
+
+  /* Paragraph */
+  --typography-paragraph-font-family: "Red Hat Display";
+  --typography-paragraph-font-size: 1rem;
+  --typography-paragraph-font-weight: 500;
+  --typography-paragraph-line-height: 1.323;
+  --typography-paragraph-letter-spacing: normal;
+
+  /* H4 */
+  --typography-h4-font-family: "Red Hat Display";
+  --typography-h4-font-size: 1.75rem;
+  --typography-h4-font-weight: 400;
+  --typography-h4-line-height: 1.323;
+  --typography-h4-letter-spacing: normal;
+
+  /* H2 */
+  --typography-h2-font-family: "Red Hat Display";
+  --typography-h2-font-size: 2.625rem;
+  --typography-h2-font-weight: 400;
+  --typography-h2-line-height: 1.323;
+  --typography-h2-letter-spacing: normal;
+
+  /* Paragraph Bold */
+  --typography-paragraphBold-font-family: "Red Hat Display";
+  --typography-paragraphBold-font-size: 1rem;
+  --typography-paragraphBold-font-weight: 700;
+  --typography-paragraphBold-line-height: 1.323;
+  --typography-paragraphBold-letter-spacing: normal;
+
+  /* Title Bold */
+  --typography-titleBold-font-family: "Open Sans";
+  --typography-titleBold-font-size: 1.5rem;
+  --typography-titleBold-font-weight: 700;
+  --typography-titleBold-line-height: 1.172;
+  --typography-titleBold-letter-spacing: normal;
+
+  /* Title Mid */
+  --typography-titleMid-font-family: "Lava Telugu";
+  --typography-titleMid-font-size: 1.5rem;
+  --typography-titleMid-font-weight: 500;
+  --typography-titleMid-line-height: 1.172;
+  --typography-titleMid-letter-spacing: normal;
+}
+
+/* Utility Classes */
+
+.bg-naviBlue { background-color: var(--color-naviBlue); }
+.text-naviBlue { color: var(--color-naviBlue); }
+.border-naviBlue { border-color: var(--color-naviBlue); }
+.hover\:bg-naviBlue:hover { background-color: var(--color-naviBlue); }
+.hover\:text-naviBlue:hover { color: var(--color-naviBlue); }
+.hover\:border-naviBlue:hover { border-color: var(--color-naviBlue); }
+.bg-superGreen { background-color: var(--color-superGreen); }
+.text-superGreen { color: var(--color-superGreen); }
+.border-superGreen { border-color: var(--color-superGreen); }
+.hover\:bg-superGreen:hover { background-color: var(--color-superGreen); }
+.hover\:text-superGreen:hover { color: var(--color-superGreen); }
+.hover\:border-superGreen:hover { border-color: var(--color-superGreen); }
+.bg-freshMint { background-color: var(--color-freshMint); }
+.text-freshMint { color: var(--color-freshMint); }
+.border-freshMint { border-color: var(--color-freshMint); }
+.hover\:bg-freshMint:hover { background-color: var(--color-freshMint); }
+.hover\:text-freshMint:hover { color: var(--color-freshMint); }
+.hover\:border-freshMint:hover { border-color: var(--color-freshMint); }
+.bg-indigo { background-color: var(--color-indigo); }
+.text-indigo { color: var(--color-indigo); }
+.border-indigo { border-color: var(--color-indigo); }
+.hover\:bg-indigo:hover { background-color: var(--color-indigo); }
+.hover\:text-indigo:hover { color: var(--color-indigo); }
+.hover\:border-indigo:hover { border-color: var(--color-indigo); }
+.bg-pinkRock { background-color: var(--color-pinkRock); }
+.text-pinkRock { color: var(--color-pinkRock); }
+.border-pinkRock { border-color: var(--color-pinkRock); }
+.hover\:bg-pinkRock:hover { background-color: var(--color-pinkRock); }
+.hover\:text-pinkRock:hover { color: var(--color-pinkRock); }
+.hover\:border-pinkRock:hover { border-color: var(--color-pinkRock); }
+.bg-orangeJuce { background-color: var(--color-orangeJuce); }
+.text-orangeJuce { color: var(--color-orangeJuce); }
+.border-orangeJuce { border-color: var(--color-orangeJuce); }
+.hover\:bg-orangeJuce:hover { background-color: var(--color-orangeJuce); }
+.hover\:text-orangeJuce:hover { color: var(--color-orangeJuce); }
+.hover\:border-orangeJuce:hover { border-color: var(--color-orangeJuce); }
+.bg-summer { background-color: var(--color-summer); }
+.text-summer { color: var(--color-summer); }
+.border-summer { border-color: var(--color-summer); }
+.hover\:bg-summer:hover { background-color: var(--color-summer); }
+.hover\:text-summer:hover { color: var(--color-summer); }
+.hover\:border-summer:hover { border-color: var(--color-summer); }
+.bg-browne { background-color: var(--color-browne); }
+.text-browne { color: var(--color-browne); }
+.border-browne { border-color: var(--color-browne); }
+.hover\:bg-browne:hover { background-color: var(--color-browne); }
+.hover\:text-browne:hover { color: var(--color-browne); }
+.hover\:border-browne:hover { border-color: var(--color-browne); }
+.bg-tiffany { background-color: var(--color-tiffany); }
+.text-tiffany { color: var(--color-tiffany); }
+.border-tiffany { border-color: var(--color-tiffany); }
+.hover\:bg-tiffany:hover { background-color: var(--color-tiffany); }
+.hover\:text-tiffany:hover { color: var(--color-tiffany); }
+.hover\:border-tiffany:hover { border-color: var(--color-tiffany); }
+.bg-crimson { background-color: var(--color-crimson); }
+.text-crimson { color: var(--color-crimson); }
+.border-crimson { border-color: var(--color-crimson); }
+.hover\:bg-crimson:hover { background-color: var(--color-crimson); }
+.hover\:text-crimson:hover { color: var(--color-crimson); }
+.hover\:border-crimson:hover { border-color: var(--color-crimson); }
+.shadow-big { box-shadow: var(--shadow-big); }
+.hover\:shadow-big:hover { box-shadow: var(--shadow-big); }
+.shadow-small { box-shadow: var(--shadow-small); }
+.hover\:shadow-small:hover { box-shadow: var(--shadow-small); }
+.typography-h1 {
+  font-family: var(--typography-h1-font-family);
+  font-size: var(--typography-h1-font-size);
+  font-weight: var(--typography-h1-font-weight);
+  line-height: var(--typography-h1-line-height);
+  letter-spacing: var(--typography-h1-letter-spacing);
+}
+.typography-h3 {
+  font-family: var(--typography-h3-font-family);
+  font-size: var(--typography-h3-font-size);
+  font-weight: var(--typography-h3-font-weight);
+  line-height: var(--typography-h3-line-height);
+  letter-spacing: var(--typography-h3-letter-spacing);
+}
+.typography-paragraph {
+  font-family: var(--typography-paragraph-font-family);
+  font-size: var(--typography-paragraph-font-size);
+  font-weight: var(--typography-paragraph-font-weight);
+  line-height: var(--typography-paragraph-line-height);
+  letter-spacing: var(--typography-paragraph-letter-spacing);
+}
+.typography-h4 {
+  font-family: var(--typography-h4-font-family);
+  font-size: var(--typography-h4-font-size);
+  font-weight: var(--typography-h4-font-weight);
+  line-height: var(--typography-h4-line-height);
+  letter-spacing: var(--typography-h4-letter-spacing);
+}
+.typography-h2 {
+  font-family: var(--typography-h2-font-family);
+  font-size: var(--typography-h2-font-size);
+  font-weight: var(--typography-h2-font-weight);
+  line-height: var(--typography-h2-line-height);
+  letter-spacing: var(--typography-h2-letter-spacing);
+}
+.typography-paragraphBold {
+  font-family: var(--typography-paragraphBold-font-family);
+  font-size: var(--typography-paragraphBold-font-size);
+  font-weight: var(--typography-paragraphBold-font-weight);
+  line-height: var(--typography-paragraphBold-line-height);
+  letter-spacing: var(--typography-paragraphBold-letter-spacing);
+}
+.typography-titleBold {
+  font-family: var(--typography-titleBold-font-family);
+  font-size: var(--typography-titleBold-font-size);
+  font-weight: var(--typography-titleBold-font-weight);
+  line-height: var(--typography-titleBold-line-height);
+  letter-spacing: var(--typography-titleBold-letter-spacing);
+}
+.typography-titleMid {
+  font-family: var(--typography-titleMid-font-family);
+  font-size: var(--typography-titleMid-font-size);
+  font-weight: var(--typography-titleMid-font-weight);
+  line-height: var(--typography-titleMid-line-height);
+  letter-spacing: var(--typography-titleMid-letter-spacing);
+}
+
+/* Font Size Utilities */
+.text-3\.375 { font-size: 3.375rem; }
+.text-2 { font-size: 2rem; }
+.text-1 { font-size: 1rem; }
+.text-1\.75 { font-size: 1.75rem; }
+.text-2\.625 { font-size: 2.625rem; }
+.text-1\.5 { font-size: 1.5rem; }
+
+/* Font Weight Utilities */
+.font-400 { font-weight: 400; }
+.font-500 { font-weight: 500; }
+.font-700 { font-weight: 700; }
+
+/* Line Height Utilities */
+.leading-1\.323 { line-height: 1.323; }
+.leading-1\.172 { line-height: 1.172; }
+
+/* Font Family Utilities */
+.font--red-hat-display- { font-family: "Red Hat Display"; }
+.font--open-sans- { font-family: "Open Sans"; }
+.font--lava-telugu- { font-family: "Lava Telugu"; }
+
+/* Responsive Utilities */
+@media (min-width: var(--breakpoint-sm)) {
+  .sm\:hidden { display: none; }
+  .sm\:block { display: block; }
+  .sm\:inline-block { display: inline-block; }
+  .sm\:flex { display: flex; }
+}
+
+@media (min-width: var(--breakpoint-md)) {
+  .md\:hidden { display: none; }
+  .md\:block { display: block; }
+  .md\:inline-block { display: inline-block; }
+  .md\:flex { display: flex; }
+}
+
+@media (min-width: var(--breakpoint-lg)) {
+  .lg\:hidden { display: none; }
+  .lg\:block { display: block; }
+  .lg\:inline-block { display: inline-block; }
+  .lg\:flex { display: flex; }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ffffff;
+    --color-text-muted: #a1a1a1;
+    --color-background: #1d1d1f;
+    --color-surface: #2d2d2f;
+    --color-border: #3d3d3f;
+    --color-hover: #3d3d3f;
+    --color-selected: #4d4d4f;
+  }
+}

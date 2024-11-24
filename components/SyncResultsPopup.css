@@ -1,0 +1,165 @@
+.sync-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.sync-popup {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.sync-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.sync-popup-close:hover {
+  background-color: #f5f5f5;
+}
+
+.sync-popup-content {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(90vh - 48px);
+}
+
+.sync-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.sync-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.sync-section h3 {
+  margin: 0 0 16px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sync-details {
+  margin-left: 8px;
+}
+
+.sync-details p {
+  margin: 8px 0;
+  color: #444;
+}
+
+.token-counts ul {
+  list-style: none;
+  margin: 8px 0 8px 16px;
+  padding: 0;
+}
+
+.token-counts li {
+  margin: 4px 0;
+  color: #666;
+}
+
+.change-group {
+  margin: 16px 0;
+}
+
+.change-group h4 {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
+}
+
+.change-group ul {
+  list-style: none;
+  margin: 0 0 0 16px;
+  padding: 0;
+}
+
+.change-group li {
+  margin: 4px 0;
+  color: #666;
+  font-family: monospace;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.sync-error {
+  text-align: center;
+  padding: 24px;
+}
+
+.sync-error h3 {
+  color: #dc3545;
+  margin: 0 0 16px;
+}
+
+.sync-error p {
+  color: #666;
+  margin: 0;
+}
+
+.sync-status {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.sync-status p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.sync-status .success {
+  color: #28a745;
+}
+
+.sync-status .error {
+  color: #dc3545;
+}

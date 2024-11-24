@@ -1,0 +1,56 @@
+.sync-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 122, 255, 0.1);
+}
+
+.sync-button:hover {
+  background-color: #0066CC;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 122, 255, 0.2);
+}
+
+.sync-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 122, 255, 0.1);
+}
+
+.sync-button:disabled {
+  background-color: #B3D7FF;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.sync-icon {
+  display: inline-block;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.sync-button.loading .sync-icon {
+  animation: rotate 1s linear infinite;
+}
+
+.sync-text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

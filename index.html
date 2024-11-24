@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Tokens Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link id="google-fonts" href="" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <style>
+        :root {
+            --sidebar-width: 240px;
+            --header-height: 64px;
+            --content-padding: 2rem;
+            --color-background: #f9f9f9;
+            --color-text: #333;
+            --color-text-primary: #333;
+            --color-text-muted: #666;
+            --color-text-tertiary: #999;
+            --color-surface: #fff;
+            --color-border: #ddd;
+            --color-hover: #f5f5f5;
+            --color-selected: #e5e5e5;
+            --color-primary: #007bff;
+            --color-superGreen: #34c759;
+            --color-pinkRock: #ff69b4;
+            --font-family-mono: 'Red Hat Mono', monospace;
+            --shadow-big: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        :root {
+            color-scheme: light;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --color-background: #1a1a1a;
+            --color-text: #ffffff;
+            --color-text-primary: #ffffff;
+            --color-text-muted: #b3b3b3;
+            --color-text-tertiary: #808080;
+            --color-surface: #292929;
+            --color-border: #404040;
+            --color-hover: #363636;
+            --color-selected: #404040;
+            --color-primary: #3b9cff;
+            --color-superGreen: #4cd964;
+            --color-pinkRock: #ff69b4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: var(--header-height);
+        }
+
+        body {
+            font-family: 'Red Hat Display', sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .app {
+            display: grid;
+            grid-template-areas:
+                "header header"
+                "sidebar main";
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: var(--header-height) 1fr;
+            min-height: 100vh;
+        }
+
+        .header {
+            grid-area: header;
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0 var(--content-padding);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--color-hover);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .theme-toggle-light, .theme-toggle-dark {
+            display: none;
+        }
+
+        [data-theme="light"] .theme-toggle-light,
+        [data-theme="dark"] .theme-toggle-dark {
+            display: block;
+        }
+
+        .search {
+            position: relative;
+            width: 300px;
+        }
+
+        .search input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            background-color: var(--color-surface);
+            color: var(--color-text-primary);
+        }
+
+        .search input::placeholder {
+            color: var(--color-text-tertiary);
+        }
+
+        .sync-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            gap: 8px;
+            height: 36px;
+            padding: 0 16px;
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 200px;
+            transition: all 0.2s ease;
+        }
+
+        .sync-button.syncing {
+            min-width: 200px;
+        }
+
+        .sync-button:hover {
+            background: var(--color-hover);
+        }
+
+        .sync-button:active {
+            background: var(--color-selected);
+        }
+
+        .sync-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .figma-logo {
+            width: 14px;
+            height: 20px;
+        }
+
+        .sidebar {
+            grid-area: sidebar;
+            background-color: var(--color-surface);
+            border-right: 1px solid var(--color-border);
+            padding: var(--content-padding);
+            position: sticky;
+            top: var(--header-height);
+            height: calc(100vh - var(--header-height));
+            overflow-y: auto;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-tertiary);
+            margin: 1.5rem 0 0.5rem;
+            padding: 0 0.75rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .nav-link .material-icons-round {
+            font-size: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-link:hover .material-icons-round {
+            transform: scale(1.1);
+        }
+
+        .nav-link:hover {
+            color: var(--color-text);
+            background-color: var(--color-hover);
+        }
+
+        .nav-link.active {
+            color: var(--color-text);
+            background-color: var(--color-selected);
+        }
+
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-link:hover svg {
+            transform: scale(1.1);
+        }
+
+        .main {
+            grid-area: main;
+            padding: var(--content-padding);
+            overflow-y: auto;
+        }
+
+        .token-section {
+            margin-bottom: 3rem;
+            padding-top: 0;
+        }
+
+        .token-section:first-child {
+            padding-top: 0;
+        }
+
+        .token-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .token-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .token-card {
+            background-color: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            color: var(--color-text-primary);
+        }
+
+        .token-card:hover {
+            background-color: var(--color-hover);
+        }
+
+        .token-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .css-variables-preview {
+            width: 100%;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .css-variables-header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 0.5rem;
+            border-bottom: 1px solid var(--color-border);
+            gap: 0.5rem;
+            background: var(--color-surface);
+        }
+
+        .css-variables-content {
+            padding: 1rem;
+            font-family: var(--font-family-mono);
+            font-size: 0.875rem;
+            white-space: pre;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+            color: var(--color-text-primary);
+        }
+
+        .css-variables-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            background: var(--color-surface);
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-text-primary);
+        }
+
+        .css-variables-button:hover {
+            background: var(--color-hover);
+        }
+
+        .token-info {
+            padding: 1rem;
+        }
+
+        .token-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .token-value {
+            font-family: var(--font-family-mono);
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            background-color: var(--color-background);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .token-value:hover {
+            background-color: var(--color-hover);
+        }
+
+        .token-value::after {
+            content: "Click to copy";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-text);
+            color: var(--color-background);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .token-value:hover::after {
+            opacity: 1;
+        }
+
+        .color-preview {
+            width: 100%;
+            height: 100%;
+        }
+
+        .typography-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            min-height: 120px;
+        }
+
+        [data-theme="dark"] .typography-preview {
+            background-color: #292929;
+        }
+
+        .typography-preview div {
+            margin: 0;
+            padding: 0;
+        }
+
+        .shadow-preview {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .section-header {
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        section {
+            padding-top: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+
+        .section-description {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+        }
+
+        .sync-popup {
+            position: fixed;
+            top: calc(var(--header-height) + 1rem);
+            right: 1rem;
+            background: var(--color-surface);
+            border-radius: 8px;
+            box-shadow: var(--shadow-big);
+            width: 320px;
+            max-width: calc(100vw - 2rem);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.2s ease-out;
+            pointer-events: none;
+        }
+
+        .sync-popup.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .sync-popup-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .sync-popup-title {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sync-popup-close {
+            padding: 0.25rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: var(--color-text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .sync-popup-close:hover {
+            background: var(--color-background);
+        }
+
+        .sync-popup-content {
+            padding: 1rem;
+        }
+
+        .sync-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+
+        .sync-status .material-icons-round {
+            font-size: 18px;
+        }
+
+        .sync-status.success {
+            color: var(--color-superGreen);
+            background: color-mix(in srgb, var(--color-superGreen) 10%, transparent);
+        }
+
+        .sync-changes {
+            margin-top: 1rem;
+        }
+
+        .sync-changes > div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .sync-changes .material-icons-round {
+            font-size: 18px;
+            color: var(--color-text-muted);
+        }
+
+        .sync-changes ul {
+            list-style: none;
+            padding: 0;
+            margin: 0.5rem 0 0 0;
+        }
+
+        .sync-changes li {
+            padding: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sync-changes li::before {
+            content: "•";
+            color: var(--color-text-muted);
+        }
+
+        .code-tabs {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .code-tab {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 0.5rem 0;
+            font-size: 0.875rem;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s ease;
+        }
+
+        .code-tab:hover {
+            color: var(--color-text);
+        }
+
+        .code-tab.active {
+            color: var(--color-text);
+            border-bottom-color: var(--color-text);
+        }
+
+        .code-content {
+            display: none;
+        }
+
+        .code-content.active {
+            display: block;
+        }
+
+        .code-block {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: var(--font-family-mono);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .code-block::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        .code-block::-webkit-scrollbar-track {
+            background: var(--color-surface);
+            border-radius: 4px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb {
+            background: var(--color-border);
+            border-radius: 4px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb:hover {
+            background: var(--color-text-muted);
+        }
+
+        .code-wrapper {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .code-actions {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 1;
+            background: var(--color-surface);
+            padding: 0.25rem;
+            border-radius: 6px;
+        }
+
+        .code-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-primary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .code-action:hover {
+            background: var(--color-hover);
+        }
+
+        .code-action svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .app {
+                grid-template-areas:
+                    "header"
+                    "main";
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .search {
+                width: 200px;
+            }
+
+            .header-actions {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <h1>Design Tokens Hub</h1>
+            <div class="header-actions">
+                <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                    <span class="theme-toggle-light">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                        </svg>
+                    </span>
+                    <span class="theme-toggle-dark">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                        </svg>
+                    </span>
+                </button>
+                <div class="search">
+                    <input type="text" placeholder="Search tokens..." id="searchInput">
+                </div>
+                <button id="syncButton" class="sync-button">
+                    <svg class="figma-logo" width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_1_52)">
+                            <path d="M4 24C6.208 24 8 22.208 8 20V16H4C1.792 16 0 17.792 0 20C0 22.208 1.792 24 4 24Z" fill="#0ACF83"/>
+                            <path d="M0 12C0 9.792 1.792 8 4 8H8V16H4C1.792 16 0 14.208 0 12Z" fill="#A259FF"/>
+                            <path d="M0 4C0 1.792 1.792 0 4 0H8V8H4C1.792 8 0 6.208 0 4Z" fill="#F24E1E"/>
+                            <path d="M8 0H12C14.208 0 16 1.792 16 4C16 6.208 14.208 8 12 8H8V0Z" fill="#FF7262"/>
+                            <path d="M16 12C16 14.208 14.208 16 12 16C9.792 16 8 14.208 8 12C8 9.792 9.792 8 12 8C14.208 8 16 9.792 16 12Z" fill="#1ABCFE"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_1_52">
+                                <rect width="16" height="24" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <span>Sync from Figma</span>
+                </button>
+            </div>
+        </header>
+
+        <div class="sync-popup" id="syncPopup">
+            <div class="sync-popup-header">
+                <div class="sync-popup-title">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M13.3332 4L5.99984 11.3333L2.6665 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Sync Report
+                </div>
+                <button class="sync-popup-close" onclick="closeSyncPopup()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="sync-popup-content">
+                <div class="sync-status success">
+                    <span class="material-icons-round">summarize</span>
+                    Tokens synchronized successfully
+                </div>
+                <div class="sync-changes">
+                    <div>
+                        <span class="material-icons-round">change_history</span>
+                        Synced Tokens:
+                    </div>
+                    <ul id="syncChangesList"></ul>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar">
+            <div class="nav">
+                <div class="nav-group">
+                    <div class="nav-title">Design Tokens</div>
+                    <a href="#colors" class="nav-link">
+                        <span class="material-icons-round">palette</span>
+                        Colors
+                    </a>
+                    <a href="#typography" class="nav-link">
+                        <span class="material-icons-round">text_fields</span>
+                        Typography
+                    </a>
+                    <a href="#shadows" class="nav-link">
+                        <span class="material-icons-round">layers</span>
+                        Shadows
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-title">Documentation</div>
+                    <a href="#css-variables" class="nav-link">
+                        <span class="material-icons-round">code</span>
+                        CSS Variables
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main">
+            <div id="content"></div>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        
+        function getPreferredTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                return savedTheme;
+            }
+            return 'light';
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        setTheme(getPreferredTheme());
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            setTheme(newTheme);
+        });
+
+        async function fetchTokens() {
+            try {
+                const response = await fetch('/tokens/tokens.json');
+                const data = await response.json();
+                
+                const fonts = new Set();
+                const weights = new Set();
+                
+                Object.values(data.global.typography || {}).forEach(token => {
+                    const fontFamily = token.value.fontFamily.replace(/['"]/g, '');
+                    const fontWeight = token.value.fontWeight;
+                    fonts.add(fontFamily);
+                    weights.add(fontWeight);
+                });
+                
+                const googleFontsUrl = Array.from(fonts)
+                    .map(font => {
+                        const weightsStr = Array.from(weights).join(';');
+                        return `family=${font.replace(/ /g, '+')}:wght@${weightsStr}`;
+                    })
+                    .join('&');
+                
+                document.getElementById('google-fonts').href = `https://fonts.googleapis.com/css2?${googleFontsUrl}&display=swap`;
+                
+                return data.global || {};
+            } catch (error) {
+                console.error('Error fetching tokens:', error);
+                return {};
+            }
+        }
+
+        function createColorPreview(token, name) {
+            return `
+                <div class="token-card">
+                    <div class="token-preview">
+                        <div class="color-preview" style="background-color: ${token.value}"></div>
+                    </div>
+                    <div class="token-info">
+                        <div class="token-name">${token.description || name}</div>
+                        <div class="token-value" data-value="${token.value}">${token.value}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createTypographyPreview(token, name) {
+            const style = token.value;
+            const fontFamily = style.fontFamily.replace(/['"]/g, '');
+            const cssValue = `font-family: ${style.fontFamily};
+font-size: ${style.fontSize};
+font-weight: ${style.fontWeight};
+line-height: ${style.lineHeight};
+letter-spacing: ${style.letterSpacing};`.trim();
+
+            return `
+                <div class="token-card">
+                    <div class="token-preview typography-preview">
+                        <div style="
+                            font-family: ${fontFamily}, sans-serif;
+                            font-size: ${style.fontSize};
+                            font-weight: ${style.fontWeight};
+                            line-height: ${style.lineHeight};
+                            letter-spacing: ${style.letterSpacing};
+                            text-align: center;
+                        ">Aa</div>
+                    </div>
+                    <div class="token-info">
+                        <div class="token-name">${token.description || name}</div>
+                        <div class="token-value" data-value="${cssValue.replace(/"/g, '&quot;')}">
+                            ${style.fontSize} ${fontFamily}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createShadowPreview(token, name) {
+            const shadow = token.value;
+            const boxShadow = `${shadow.x} ${shadow.y} ${shadow.blur} ${shadow.spread} ${shadow.color}`;
+            return `
+                <div class="token-card">
+                    <div class="token-preview">
+                        <div class="shadow-preview" style="box-shadow: ${boxShadow}"></div>
+                    </div>
+                    <div class="token-info">
+                        <div class="token-name">${token.description || name}</div>
+                        <div class="token-value" data-value="box-shadow: ${boxShadow};">${boxShadow}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function createCssVariablesSection() {
+            const cssResponse = await fetch('css/variables.css');
+            const cssContent = await cssResponse.text();
+            const cssMinResponse = await fetch('css/variables.min.css');
+            const cssMinContent = await cssMinResponse.text();
+
+            const section = document.createElement('section');
+            section.id = 'css-variables';
+            section.className = 'token-section';
+
+            const heading = document.createElement('h2');
+            heading.textContent = 'CSS Variables';
+            section.appendChild(heading);
+
+            const tabs = document.createElement('div');
+            tabs.className = 'code-tabs';
+
+            const cssTab = document.createElement('button');
+            cssTab.className = 'code-tab active';
+            cssTab.textContent = 'CSS';
+            cssTab.onclick = () => switchTab('css');
+
+            const cssMinTab = document.createElement('button');
+            cssMinTab.className = 'code-tab';
+            cssMinTab.textContent = 'CSS Mini';
+            cssMinTab.onclick = () => switchTab('css-min');
+
+            tabs.appendChild(cssTab);
+            tabs.appendChild(cssMinTab);
+
+            const cssContentElement = document.createElement('div');
+            cssContentElement.className = 'code-content active';
+            cssContentElement.id = 'css-content';
+            cssContentElement.appendChild(createCodeSnippet(cssContent));
+
+            const cssMinContentElement = document.createElement('div');
+            cssMinContentElement.className = 'code-content';
+            cssMinContentElement.id = 'css-min-content';
+            cssMinContentElement.appendChild(createCodeSnippet(cssMinContent));
+
+            section.appendChild(tabs);
+            section.appendChild(cssContentElement);
+            section.appendChild(cssMinContentElement);
+
+            return section;
+        }
+
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.code-tab');
+            const contents = document.querySelectorAll('.code-content');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+
+            if (tabId === 'css') {
+                tabs[0].classList.add('active');
+                contents[0].classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                contents[1].classList.add('active');
+            }
+        }
+
+        async function renderTokens(tokens) {
+            const main = document.querySelector('main');
+            main.innerHTML = '';
+
+            // Colors Section
+            if (tokens.colors && Object.keys(tokens.colors).length > 0) {
+                const colorsSection = document.createElement('section');
+                colorsSection.id = 'colors';
+                colorsSection.className = 'token-section';
+
+                const heading = document.createElement('h2');
+                heading.textContent = 'Colors';
+                colorsSection.appendChild(heading);
+
+                const tokenGrid = document.createElement('div');
+                tokenGrid.className = 'token-grid';
+                colorsSection.appendChild(tokenGrid);
+
+                Object.entries(tokens.colors).forEach(([name, token]) => {
+                    const tokenCard = createColorPreview(token, name);
+                    tokenGrid.innerHTML += tokenCard;
+                });
+
+                main.appendChild(colorsSection);
+            }
+
+            // Typography Section
+            if (tokens.typography && Object.keys(tokens.typography).length > 0) {
+                const typographySection = document.createElement('section');
+                typographySection.id = 'typography';
+                typographySection.className = 'token-section';
+
+                const heading = document.createElement('h2');
+                heading.textContent = 'Typography';
+                typographySection.appendChild(heading);
+
+                const tokenGrid = document.createElement('div');
+                tokenGrid.className = 'token-grid';
+                typographySection.appendChild(tokenGrid);
+
+                Object.entries(tokens.typography).forEach(([name, token]) => {
+                    const tokenCard = createTypographyPreview(token, name);
+                    tokenGrid.innerHTML += tokenCard;
+                });
+
+                main.appendChild(typographySection);
+            }
+
+            // Shadows Section
+            if (tokens.shadows && Object.keys(tokens.shadows).length > 0) {
+                const shadowsSection = document.createElement('section');
+                shadowsSection.id = 'shadows';
+                shadowsSection.className = 'token-section';
+
+                const heading = document.createElement('h2');
+                heading.textContent = 'Shadows';
+                shadowsSection.appendChild(heading);
+
+                const tokenGrid = document.createElement('div');
+                tokenGrid.className = 'token-grid';
+                shadowsSection.appendChild(tokenGrid);
+
+                Object.entries(tokens.shadows).forEach(([name, token]) => {
+                    const tokenCard = createShadowPreview(token, name);
+                    tokenGrid.innerHTML += tokenCard;
+                });
+
+                main.appendChild(shadowsSection);
+            }
+
+            // CSS Variables Section (moved to the end)
+            const cssVariablesSection = await createCssVariablesSection();
+            main.appendChild(cssVariablesSection);
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === window.location.hash || (link.getAttribute('href') === '#colors' && !window.location.hash));
+            });
+
+            const activeSection = document.querySelector(window.location.hash || '#colors');
+            if (activeSection) {
+                activeSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.token-value')) {
+                    const valueEl = e.target.closest('.token-value');
+                    const value = valueEl.getAttribute('data-value');
+                    
+                    if (value) {
+                        navigator.clipboard.writeText(value).then(() => {
+                            const originalText = valueEl.textContent.trim();
+                            valueEl.textContent = 'Copied!';
+                            setTimeout(() => {
+                                valueEl.textContent = originalText;
+                            }, 2000);
+                        });
+                    }
+                }
+            });
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    const headerOffset = 84; 
+                    const elementPosition = targetSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    history.pushState(null, '', `#${targetId}`);
+                }
+            });
+        });
+
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            document.querySelectorAll('.token-card').forEach(card => {
+                const name = card.querySelector('.token-name').textContent.toLowerCase();
+                const value = card.querySelector('.token-value').textContent.toLowerCase();
+                const isVisible = name.includes(searchTerm) || value.includes(searchTerm);
+                card.style.display = isVisible ? 'block' : 'none';
+            });
+        });
+
+        const syncButton = document.getElementById('syncButton');
+        
+        async function syncFromFigma() {
+            const syncButton = document.getElementById('syncButton');
+            const originalText = syncButton.innerHTML;
+            
+            syncButton.innerHTML = `
+                <svg class="spin" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                Syncing...
+            `;
+            syncButton.classList.add('syncing');
+            syncButton.disabled = true;
+
+            try {
+                const response = await fetch('/figma/sync', { method: 'POST' });
+                const data = await response.json();
+                
+                if (!response.ok) throw new Error(data.error || 'Sync failed');
+                
+                if (!data.global) throw new Error('Invalid response format');
+
+                const changesList = document.getElementById('syncChangesList');
+                changesList.innerHTML = '';
+                
+                const changes = [
+                    `${Object.keys(data.global.colors || {}).length} color tokens`,
+                    `${Object.keys(data.global.typography || {}).length} typography tokens`,
+                    `${Object.keys(data.global.shadows || {}).length} shadow tokens`
+                ];
+                
+                changes.forEach(change => {
+                    const li = document.createElement('li');
+                    li.textContent = change;
+                    changesList.appendChild(li);
+                });
+                
+                const popup = document.getElementById('syncPopup');
+                popup.classList.add('visible');
+                
+                setTimeout(() => {
+                    popup.classList.remove('visible');
+                }, 5000);
+                
+                await fetchTokens().then(renderTokens);
+                
+            } catch (error) {
+                console.error('Sync failed:', error);
+                
+                const popup = document.getElementById('syncPopup');
+                const statusEl = popup.querySelector('.sync-status');
+                const changesEl = popup.querySelector('.sync-changes');
+                
+                statusEl.classList.remove('success');
+                statusEl.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 5V8M8 11H8.01M3 3L13 13M13 3L3 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Sync failed
+                `;
+                statusEl.style.color = 'var(--color-pinkRock)';
+                statusEl.style.background = 'color-mix(in srgb, var(--color-pinkRock) 10%, transparent)';
+                
+                changesEl.innerHTML = `
+                    <div>Error details:</div>
+                    <div style="margin-top: 0.5rem; color: var(--color-text);">${error.message}</div>
+                `;
+                
+                popup.classList.add('visible');
+                
+                setTimeout(() => {
+                    popup.classList.remove('visible');
+                }, 5000);
+            } finally {
+                syncButton.innerHTML = originalText;
+                syncButton.classList.remove('syncing');
+                syncButton.disabled = false;
+            }
+        }
+
+        function closeSyncPopup() {
+            document.getElementById('syncPopup').classList.remove('visible');
+        }
+
+        syncButton.addEventListener('click', syncFromFigma);
+
+        async function copyVariables(button) {
+            const codeBlock = button.closest('.code-wrapper').querySelector('code');
+            try {
+                await navigator.clipboard.writeText(codeBlock.textContent);
+                const originalText = button.innerHTML;
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Copied!
+                `;
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+            }
+        }
+
+        function downloadVariables(button) {
+            const wrapper = button.closest('.code-wrapper');
+            const codeBlock = wrapper.querySelector('code');
+            const content = codeBlock.textContent;
+            const isMinified = wrapper.closest('.code-content').id === 'css-min-content';
+            const filename = isMinified ? 'variables.min.css' : 'variables.css';
+
+            const blob = new Blob([content], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function createCodeSnippet(content, language = 'css') {
+            const pre = document.createElement('pre');
+            pre.className = 'code-block';
+            const code = document.createElement('code');
+            code.className = `language-${language}`;
+            code.textContent = content;
+            pre.appendChild(code);
+            
+            const actions = document.createElement('div');
+            actions.className = 'code-actions';
+            
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'code-action';
+            copyBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M13.3332 6H7.33317C6.59679 6 5.99984 6.59695 5.99984 7.33333V13.3333C5.99984 14.0697 6.59679 14.6667 7.33317 14.6667H13.3332C14.0696 14.6667 14.6665 14.0697 14.6665 13.3333V7.33333C14.6665 6.59695 14.0696 6 13.3332 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.33317 10H2.6665C1.93012 10 1.33317 9.40305 1.33317 8.66667V2.66667C1.33317 1.93029 1.93012 1.33334 2.6665 1.33334H8.6665C9.40288 1.33334 9.99984 1.93029 9.99984 2.66667V3.33334" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Copy
+            `;
+            
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'code-action';
+            downloadBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M14 10V12.6667C14 13.0203 13.8595 13.3594 13.6095 13.6095C13.3594 13.8595 13.0203 14 12.6667 14H3.33333C2.97971 14 2.64057 13.8595 2.39052 13.6095C2.14048 13.3594 2 13.0203 2 12.6667V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.6665 6.66666L7.99984 10L11.3332 6.66666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 10V2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Download
+            `;
+            
+            copyBtn.onclick = () => copyVariables(copyBtn);
+            downloadBtn.onclick = () => downloadVariables(downloadBtn);
+            
+            actions.appendChild(copyBtn);
+            actions.appendChild(downloadBtn);
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = 'code-wrapper';
+            wrapper.appendChild(pre);
+            wrapper.appendChild(actions);
+            
+            return wrapper;
+        }
+
+        fetchTokens().then(renderTokens);
+    </script>
+</body>
+</html>
