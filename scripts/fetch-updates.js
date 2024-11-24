@@ -126,21 +126,32 @@ function extractTokens(styles) {
 
     // Process typography
     textStyles.forEach(style => {
-        if (style.node?.style) {
-            const { style: textStyle } = style.node;
-            const tokenName = formatTokenName(style.name);
-            tokens.global.typography[tokenName] = {
-                value: {
-                    fontFamily: formatFontFamily(textStyle.fontFamily),
-                    fontSize: pxToRem(textStyle.fontSize),
-                    fontWeight: textStyle.fontWeight,
-                    lineHeight: calculateUnitlessLineHeight(textStyle.lineHeightPx, textStyle.fontSize),
-                    letterSpacing: textStyle.letterSpacing === 0 ? 'normal' : `${textStyle.letterSpacing}px`
-                },
-                type: 'typography',
-                description: style.description || style.name
-            };
-            console.log(`Processed typography token: ${style.name} -> ${tokenName}`);
+        try {
+            if (style.node?.style) {
+                const { style: textStyle } = style.node;
+                const tokenName = formatTokenName(style.name);
+                
+                // Check if all required properties exist
+                if (!textStyle.fontFamily || !textStyle.fontSize) {
+                    console.log(`Skipping typography token ${style.name} due to missing required properties`);
+                    return;
+                }
+
+                tokens.global.typography[tokenName] = {
+                    value: {
+                        fontFamily: formatFontFamily(textStyle.fontFamily),
+                        fontSize: pxToRem(textStyle.fontSize),
+                        fontWeight: textStyle.fontWeight || 400,
+                        lineHeight: textStyle.lineHeightPx ? calculateUnitlessLineHeight(textStyle.lineHeightPx, textStyle.fontSize) : 1.2,
+                        letterSpacing: textStyle.letterSpacing === 0 ? 'normal' : `${textStyle.letterSpacing || 0}px`
+                    },
+                    type: 'typography',
+                    description: style.description || style.name
+                };
+                console.log(`Processed typography token: ${style.name} -> ${tokenName}`);
+            }
+        } catch (error) {
+            console.error(`Error processing typography token ${style.name}:`, error);
         }
     });
 
