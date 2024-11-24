@@ -856,31 +856,23 @@
 
         async function fetchTokens() {
             try {
-                const response = await fetch('/tokens/tokens.json');
-                const data = await response.json();
-                
-                const fonts = new Set();
-                const weights = new Set();
-                
-                Object.values(data.global.typography || {}).forEach(token => {
-                    const fontFamily = token.value.fontFamily.replace(/['"]/g, '');
-                    const fontWeight = token.value.fontWeight;
-                    fonts.add(fontFamily);
-                    weights.add(fontWeight);
-                });
-                
-                const googleFontsUrl = Array.from(fonts)
-                    .map(font => {
-                        const weightsStr = Array.from(weights).join(';');
-                        return `family=${font.replace(/ /g, '+')}:wght@${weightsStr}`;
-                    })
-                    .join('&');
-                
-                document.getElementById('google-fonts').href = `https://fonts.googleapis.com/css2?${googleFontsUrl}&display=swap`;
-                
-                return data.global || {};
+                // Try to fetch from local server first
+                const response = await fetch('/api/tokens');
+                if (response.ok) {
+                    return await response.json();
+                }
             } catch (error) {
-                console.error('Error fetching tokens:', error);
+                console.log('Local server not available, using static tokens');
+            }
+
+            // Fallback to static tokens for GitHub Pages
+            try {
+                const response = await fetch('tokens/static-tokens.json');
+                if (response.ok) {
+                    return await response.json();
+                }
+            } catch (error) {
+                console.error('Failed to load tokens:', error);
                 return {};
             }
         }
@@ -1148,17 +1140,23 @@ letter-spacing: ${style.letterSpacing};`.trim();
         const syncButton = document.getElementById('syncButton');
         
         async function syncFromFigma() {
-            const syncButton = document.getElementById('syncButton');
-            const originalText = syncButton.innerHTML;
-            
-            syncButton.innerHTML = `
-                <svg class="spin" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg>
-                Syncing...
-            `;
-            syncButton.classList.add('syncing');
-            syncButton.disabled = true;
+            if (window.location.hostname === 'artemsvit.github.io') {
+                const popup = document.createElement('div');
+                popup.className = 'sync-popup';
+                popup.innerHTML = `
+                    <div class="sync-popup-content">
+                        <h3>Sync Not Available</h3>
+                        <p>Figma sync is only available in the local development environment.</p>
+                        <button onclick="closeSyncPopup()" class="close-button">Close</button>
+                    </div>
+                `;
+                document.body.appendChild(popup);
+                return;
+            }
+
+            const button = document.querySelector('.sync-button');
+            button.disabled = true;
+            button.innerHTML = '<span class="material-icons-round spinning">sync</span>Syncing...';
 
             try {
                 const response = await fetch('/figma/sync', { method: 'POST' });
@@ -1220,9 +1218,24 @@ letter-spacing: ${style.letterSpacing};`.trim();
                     popup.classList.remove('visible');
                 }, 5000);
             } finally {
-                syncButton.innerHTML = originalText;
-                syncButton.classList.remove('syncing');
-                syncButton.disabled = false;
+                button.disabled = false;
+                button.innerHTML = `
+                    <svg class="figma-logo" width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_1_52)">
+                            <path d="M4 24C6.208 24 8 22.208 8 20V16H4C1.792 16 0 17.792 0 20C0 22.208 1.792 24 4 24Z" fill="#0ACF83"/>
+                            <path d="M0 12C0 9.792 1.792 8 4 8H8V16H4C1.792 16 0 14.208 0 12Z" fill="#A259FF"/>
+                            <path d="M0 4C0 1.792 1.792 0 4 0H8V8H4C1.792 8 0 6.208 0 4Z" fill="#F24E1E"/>
+                            <path d="M8 0H12C14.208 0 16 1.792 16 4C16 6.208 14.208 8 12 8H8V0Z" fill="#FF7262"/>
+                            <path d="M16 12C16 14.208 14.208 16 12 16C9.792 16 8 14.208 8 12C8 9.792 9.792 8 12 8C14.208 8 16 9.792 16 12Z" fill="#1ABCFE"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_1_52">
+                                <rect width="16" height="24" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <span>Sync from Figma</span>
+                `;
             }
         }
 
